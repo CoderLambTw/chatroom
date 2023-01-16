@@ -1,7 +1,16 @@
 package com.coderlambtw.chatroom.constant;
 
 public enum Status {
-    CHAT,
-    CONNECT,
-    DISCONNECT
+  /**
+   * 聊天
+   */
+  CHAT,
+  /**
+   * 連線
+   */
+  CONNECT,
+  /**
+   * 離線
+   */
+  DISCONNECT
 }

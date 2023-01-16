@@ -18,26 +18,24 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class WebSocketEventListener {
 
-    private final SimpMessageSendingOperations sendingOperations;
+  private final SimpMessageSendingOperations sendingOperations;
 
-    @EventListener
-    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        LocalDateTime connectedTime = LocalDateTime.now();
-        log.info("New user Connected at {}", connectedTime);
-    }
+  @EventListener
+  public void handleWebSocketConnectListener(SessionConnectedEvent event) {
+    LocalDateTime connectedTime = LocalDateTime.now();
+    log.info("New user Connected at {}", connectedTime);
+  }
 
-    @EventListener
-    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+  @EventListener
+  public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
+    StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
-        String username = (String) headerAccessor.getSessionAttributes().get("username");
+    String username = (String) headerAccessor.getSessionAttributes().get("username");
 
-        ChatMessage chatMessage = ChatMessage.builder()
-                .type(Status.DISCONNECT)
-                .sender(username)
-                .build();
+    ChatMessage chatMessage =
+        ChatMessage.builder().type(Status.DISCONNECT).sender(username).build();
 
-        log.info("{} has left the chat room", username);
-        sendingOperations.convertAndSend("/topic/public", chatMessage);
-    }
+    log.info("{} has left the chat room", username);
+    sendingOperations.convertAndSend("/topic/public", chatMessage);
+  }
 }
